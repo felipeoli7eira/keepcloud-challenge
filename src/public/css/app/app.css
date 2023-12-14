@@ -1,0 +1,49 @@
+.app,
+.dashboard-main-grid .navigation-side,
+.dashboard-main-grid .content-side
+{
+    height: 100vh !important;
+}
+
+.table-rounded
+{
+    /* text-align: center; */
+    /* border-collapse: separate; */
+    overflow: hidden;
+    -webkit-border-radius: 0.375rem;
+    -moz-border-radius: 0.375rem;
+    border-radius: 0.375rem;
+}
+
+.form-control
+{
+    background-color: #282828 !important;
+    border-color: #3a3a3a !important;
+    color: white !important;
+    font-weight: 300 !important;
+}
+
+.form-control-black
+{
+    background-color: #282828 !important;
+    border-color: #3a3a3a !important;
+    color: white !important;
+    font-weight: 300 !important;
+}
+
+.form-control::placeholder
+{
+    color: rgba(255, 255, 255, 0.178) !important;
+    font-weight: 300 !important;
+}
+
+.form-control:focus
+{
+    box-shadow: 0 0 0 0.25rem rgb(165 165 165 / 10%);
+    border-color: #474747 !important;
+}
+
+.input-group-text{
+    background-color: #2b3035;
+    border: none;
+}

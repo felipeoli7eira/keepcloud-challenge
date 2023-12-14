@@ -1,0 +1,45 @@
+version: '3.3'
+
+services:
+  app:
+    image: php:8.0-apache-laravelapp
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    container_name: laravelapp
+    volumes:
+      - ./src:/laravelapp
+    ports:
+      - 5000:8080
+    environment:
+      - APACHE_RUN_USER=#1000
+      - APACHE_RUN_GROUP=#1000
+      - XDEBUG_CONFIG="remote_host=host.docker.internal remote_port=9001 remote_enable=1"
+      - COMPOSER_MEMORY_LIMIT=-1
+    depends_on:
+      - db
+    networks:
+      - laravelapp_network
+  db:
+    container_name: laravelapp_database
+    image: mariadb:10.1.36
+    environment:
+      MARIADB_ROOT_PASSWORD: laravelapp
+      MARIADB_USER: laravelapp
+      MARIADB_PASSWORD: laravelapp
+      MARIADB_DATABASE: laravelapp
+      MYSQL_ROOT_PASSWORD: laravelapp
+      MYSQL_USER: laravelapp
+      MYSQL_PASSWORD: laravelapp
+      MYSQL_DATABASE: laravelapp
+      command: --default-authentication-plugin=mysql_native_password --sql_mode="ALLOW_INVALID_DATES"
+    volumes:
+      - ./docker/database/laravelapp:/docker-entrypoint-initdb.d
+      - ./docker/database/laravelapp/data:/var/lib/mysql
+    ports:
+      - 5001:3306
+    networks:
+      - laravelapp_network
+networks:
+  laravelapp_network:
+    driver: bridge
