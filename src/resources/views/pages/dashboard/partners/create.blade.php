@@ -31,8 +31,8 @@
                     </div>
                     <div class="col col-9">
                         <select name="type" id="type" class="form-control @error('type') is-invalid @enderror" name="type" required>
-                            <option selected value="silver">Silver</option>
-                            <option value="gold">Gold</option>
+                            <option selected value="silver">SILVER</option>
+                            <option value="gold">👑 GOLD</option>
                         </select>
                     </div>
                 </div>

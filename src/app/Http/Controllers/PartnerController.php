@@ -65,7 +65,9 @@ class PartnerController extends Controller
             return route('dashboard.partner.list');
         }
 
-        return view('pages.dashboard.partners.update', compact('partner'));
+        $ufs = (new AddressController())->ufs;
+
+        return view('pages.dashboard.partners.update', compact('partner', 'ufs'));
     }
 
     /**

@@ -37,6 +37,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth', 'as' => 'dashboar
     // delete....
     // * End partners routes
 
+    // * Rotas relacionadas a endereço
+    Route::post('address', [App\Http\Controllers\AddressController::class, 'store'])->name('address.store');
+
     Route::get('profile', [App\Http\Controllers\User::class, 'showAuthUserProfile'])->name('user.profile.show');
     Route::put('profile/{user}', [App\Http\Controllers\User::class, 'updateAuthUserProfile'])->name('user.profile.update');
 });

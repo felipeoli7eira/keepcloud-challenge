@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('logradouro');
             $table->string('numero')->nullable();
             $table->string('complemento')->nullable();
+            $table->string('bairro');
             $table->string('cidade');
             $table->string('estado');
             $table->timestamps();

@@ -2,11 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Address\AddressStoreRequest;
 use App\Models\Address;
 use Illuminate\Http\Request;
+use Throwable;
 
 class AddressController extends Controller
 {
+    public array $ufs;
+
+    public function __construct()
+    {
+        $this->ufs = [
+            'AC',
+            'AL',
+            'AP',
+            'AM',
+            'BA',
+            'CE',
+            'DF',
+            'ES',
+            'GO',
+            'MA',
+            'MT',
+            'MS',
+            'MG',
+            'PA',
+            'PB',
+            'PR',
+            'PE',
+            'PI',
+            'RJ',
+            'RN',
+            'RS',
+            'RO',
+            'RR',
+            'SC',
+            'SP',
+            'SE',
+            'TO',
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,12 +67,35 @@ class AddressController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Address\AddressStoreRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddressStoreRequest $request)
     {
-        //
+        try
+        {
+            $address = new Address([
+                'cep' => $request->input('cep'),
+                'logradouro' => $request->input('logradouro'),
+                'numero' => $request->input('numero'),
+                'complemento' => $request->input('complemento'),
+                'bairro' => $request->input('bairro'),
+                'cidade' => $request->input('cidade'),
+                'estado' => $request->input('uf'),
+
+                'partner_id' => $request->input('modelid')
+            ]);
+
+            $address->save();
+
+            return back()->with('address_added', true);
+        }
+        catch (Throwable $throwable)
+        {
+
+            dd($throwable->getMessage());
+            return back()->withInput()->with('address_added', false);
+        }
     }
 
     /**

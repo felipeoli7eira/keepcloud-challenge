@@ -54,6 +54,14 @@
                         </td>
                     </tr>
                 @endforeach
+
+                @if(count($partners) === 0)
+                    <tr>
+                        <td colspan="3" class="text-center border-0 fw-light">
+                            Nenhum sócio cadastrado até o momento...
+                        </td>
+                    </tr>
+                @endif
             </tbody>
         </table>
 
