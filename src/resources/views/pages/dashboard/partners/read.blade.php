@@ -18,6 +18,18 @@
             </div>
         @enderror
 
+        @if(session()->has('partner_deleted'))
+            @if(session('partner_deleted'))
+                <div class="alert alert-info shadow">
+                    <p class="m-0 fw-light">Sócio deletado.</p>
+                </div>
+            @else
+                <div class="alert alert-danger shadow">
+                    <p class="m-0 fw-light">Erro ao deletar o sócio.</p>
+                </div>
+            @endif
+        @enderror
+
         <table class="table table-dark table-rounded shadow-sm m-0 table-hover">
             <thead>
                 <tr>

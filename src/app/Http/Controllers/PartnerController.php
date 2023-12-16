@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePartnerRequest;
+use App\Models\Address;
 use App\Models\Partner;
 use Illuminate\Http\Request;
 use Throwable;
@@ -115,6 +116,19 @@ class PartnerController extends Controller
     public function destroy(Request $request)
     {
         $partner = Partner::find($request->id);
-        dd($partner->name);
+
+        if (! $partner) {
+            return back()->with('partner_deleted', false);
+        }
+
+        $partnerAddresses = Address::where('partner_id', $request->id);
+
+        if ($partnerAddresses->exists()) {
+            $partnerAddresses->delete();
+        }
+
+        $deleted = $partner->delete();
+
+        return back()->with('partner_deleted', $deleted);
     }
 }
