@@ -26,6 +26,18 @@
             @endif
         @endif
 
+        @if(session()->has('address_updated'))
+            @if(session('address_updated'))
+                <div class="alert alert-success shadow-sm" role="alert">
+                    <p class="m-0 fw-light">Endereço atualizado</p>
+                </div>
+            @else
+                <div class="alert alert-danger shadow-sm" role="alert">
+                    <p class="m-0 fw-light">Erro ao atualizar o endereço</p>
+                </div>
+            @endif
+        @endif
+
         @if($errors->any())
             <div class="errors my-5">
                 @foreach($errors->all() as $key => $error)
@@ -96,20 +108,33 @@
         <div class="container mb-5 d-flex gap-2 overflow-x-auto">
             @foreach($partner->addresses as $arrayIndex => $address)
                 <div class="card card-partner-address bg-dark shadow border border-dark">
-                    <div class="card-header">
-                        <h5 class="text-white h5 fw-light">📌 {{ $arrayIndex + 1 }}</h5>
+                    <div class="card-header d-flex align-items-center gap-2">
+                        <span class="text-white">{{ $arrayIndex + 1 }}</span>
+                        @if($address->principal)
+                            <p class="text-white text-sm fw-light m-0">- Este é o endereço principal</p>
+                        @endif
                     </div>
                     <div class="card-body">
                         <p class="card-text mb-2 text-white">{{ $address->logradouro }}, {{ $address->numero }}</p>
                         <p class="card-text mb-2 text-white">Bairro: {{ $address->bairro }}</p>
                         <p class="m-0 card-title text-white mb-2">{{ $address->cidade }} - {{ $address->estado }}</p>
-                        <p class="m-0 card-title text-white mb-2">{{ $address->cep }}</p>
+                        <p class="m-0 card-title text-white m-0">{{ $address->cep }}</p>
                         @if($address->complemento)
                             <p class="card-subtitle mb-2 text-white mt-3">Complemento:</p>
                             <p class="card-subtitle mb-2 text-white">{{ $address->complemento }}</p>
                         @endif
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer d-flex align-items-center justify-content-between p-3">
+                        @if(! $address->principal)
+                            <form action="{{ route('dashboard.address.ismain') }}" method="post">
+                                @method('PUT')
+                                @csrf
+                                <input type="hidden" name="partner_id" value="{{ request()->id }}">
+                                <input type="hidden" name="address_id" value="{{ $address->id }}">
+                                <button type="submit" class="btn btn-primary btn-sm">Marcar como principal</button>
+                            </form>
+                        @endif
+
                         <form action="{{ route('dashboard.address.destroy', $address->id) }}" method="post">
                             @method('DELETE')
                             @csrf
@@ -167,6 +192,7 @@
                         minlength="1"
                         maxlength="191"
                         value="{{ old('numero', '') }}"
+                        placeholder="Ex.: 426"
                     />
                 </div>
             </div>
@@ -186,6 +212,7 @@
                         minlength="1"
                         maxlength="191"
                         value="{{ old('logradouro', '') }}"
+                        placeholder="Ex.: Rua Mário Paula"
                     />
                 </div>
             </div>
@@ -205,6 +232,7 @@
                         minlength="1"
                         maxlength="191"
                         value="{{ old('bairro', '') }}"
+                        placeholder="Ex.: Rincão"
                     />
                 </div>
             </div>
@@ -224,6 +252,7 @@
                         minlength="1"
                         maxlength="191"
                         value="{{ old('cidade', '') }}"
+                        placeholder="Ex.: Mossoró"
                     />
                 </div>
             </div>
@@ -256,6 +285,7 @@
                         class="form-control @error('complemento') is-invalid @enderror"
                         maxlength="50"
                         value="{{ old('complemento', '') }}"
+                        placeholder="Ex.: Ao lado da UPA"
                     />
                 </div>
             </div>

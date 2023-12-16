@@ -9,6 +9,10 @@
             </nav>
         </div>
 
+        <div class="bd-callout bd-callout-warning">
+            <p class="m-0 fw-light">É possível cadastrar endereços do sócio na tela de edição dele.</p>
+        </div>
+
         <div class="container">
             <form action="{{ route('dashboard.partner.store') }}" method="post" class="" novalidate>
                 @csrf
@@ -36,40 +40,6 @@
                         </select>
                     </div>
                 </div>
-                {{-- <div class="row mb-3">
-                    <div class="col col-3">
-                        <label for="" class="m-0 text-white h-100 d-flex flex-col align-items-center">
-                            <span class="text-danger me-2">*</span> Senha
-                        </label>
-                    </div>
-                    <div class="col col-9">
-                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="******" required min="6" max="191" value="">
-                    </div>
-                </div> --}}
-                {{-- <div class="row mb-3">
-                    <div class="col col-3">
-                        <label for="" class="m-0 text-white h-100 d-flex flex-col align-items-center">
-                            <span class="text-danger me-2">*</span> Repetir senha
-                        </label>
-                    </div>
-                    <div class="col col-9">
-                        <input type="password" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="******" required min="6" max="191" value="">
-                    </div>
-                </div> --}}
-                {{-- <div class="row mb-3">
-                    <div class="col col-3">
-                        <label for="" class="m-0 text-white h-100 d-flex flex-col align-items-center">
-                            <span class="text-danger me-2">*</span> Papel
-                        </label>
-                    </div>
-                    <div class="col col-9">
-                        <select name="role" id="role" class="form-control @error('role') is-invalid @enderror" name="role" required>
-                            @foreach($user_roles as $index => $role)
-                                <option value="{{ $role->name }}">{{ $role->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div> --}}
 
                 @if($errors->any())
                     <div class="errors my-5">
@@ -88,4 +58,20 @@
 @endsection
 
 @section('css')
+<style>
+    .bd-callout-warning {
+        border-left-color: #375570;
+        background-color: #36373a
+    }
+
+    .bd-callout {
+        padding: 1.25rem;
+        margin-top: 1.25rem;
+        margin-bottom: 1.25rem;
+        border: 1px solid #547797;
+        border-left-width: 0.25rem;
+        border-radius: 0.25rem;
+        color: white
+    }
+</style>
 @endsection

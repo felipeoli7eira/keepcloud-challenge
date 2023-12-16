@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Address\AddressStoreRequest;
+use App\Http\Requests\Address\MarkAsMainRequest;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use Throwable;
@@ -137,7 +138,7 @@ class AddressController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Address  $address
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
@@ -153,5 +154,25 @@ class AddressController extends Controller
         }
 
         return back();
+    }
+
+    /**
+     * Define um endereço de um sócio como endereço principal
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function markAsMain(MarkAsMainRequest $request)
+    {
+        $partnerAddresses = Address::where('partner_id', $request->partner_id);
+
+        if (! $partnerAddresses->count()) {
+            return back()->withErrors('Nenhum endereço do sócio para atualizar.');
+        }
+
+        $partnerAddresses->update(['principal' => false]);
+        $partnerAddresses->where('id', $request->address_id)->update(['principal' => true]);
+
+        return back()->with('address_updated', true);
     }
 }

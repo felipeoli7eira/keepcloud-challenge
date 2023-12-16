@@ -40,6 +40,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth', 'as' => 'dashboar
     // * Rotas relacionadas a endereço
     Route::post('address', [App\Http\Controllers\AddressController::class, 'store'])->name('address.store');
     Route::delete('address/{id}/destroy', [App\Http\Controllers\AddressController::class, 'destroy'])->name('address.destroy');
+    Route::put('address/is-main', [App\Http\Controllers\AddressController::class, 'markAsMain'])->name('address.ismain');
 
 
     Route::get('profile', [App\Http\Controllers\User::class, 'showAuthUserProfile'])->name('user.profile.show');

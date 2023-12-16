@@ -18,13 +18,14 @@ return new class extends Migration
             $table->unsignedBigInteger('partner_id');
             $table->foreign('partner_id')->references('id')->on('partners');
 
-            $table->string('cep');
-            $table->string('logradouro');
             $table->string('numero')->nullable();
+            $table->string('logradouro');
             $table->string('complemento')->nullable();
             $table->string('bairro');
             $table->string('cidade');
             $table->string('estado');
+            $table->string('cep');
+            $table->boolean('principal')->default(false);
             $table->timestamps();
         });
     }
