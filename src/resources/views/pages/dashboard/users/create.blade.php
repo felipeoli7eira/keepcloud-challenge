@@ -3,7 +3,7 @@
 @section('content')
     <div class="dashboard-page">
         <div class="dashboard-page-title mb-5 d-flex align-items-center justify-content-between">
-            <h1 class="text-white h1 h1-responsive fw-light">Cadastro de usuário</h1>
+            <h3 class="text-white h3 h3-responsive fw-light">Cadastro de usuário</h3>
             <nav>
                 <a href="{{ route('dashboard.users.index') }}" class="btn btn-primary btn-md text-uppercase shadow-sm fw-medium">voltar</a>
             </nav>

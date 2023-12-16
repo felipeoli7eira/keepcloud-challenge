@@ -20,7 +20,7 @@ class User extends Controller
      */
     public function index()
     {
-        $users = ModelsUser::where('id', '!=', auth()->user()->id)->select([
+        $users = ModelsUser::where('id', '!=', auth()->user()->id)->orderBy('id', 'DESC')->select([
             '*',
             // DB::raw("DATE_FORMAT(created_at, '%d/%m/%Y %H:%i') AS created_at")
         ])->get();

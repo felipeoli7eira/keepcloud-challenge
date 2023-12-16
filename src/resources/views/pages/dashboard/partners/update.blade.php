@@ -93,9 +93,12 @@
             <h3 class="text-white h3 h3-responsive fw-light">Endereços</h3>
         </div>
 
-        <div class="container mb-5 d-flex gap-2">
+        <div class="container mb-5 d-flex gap-2 overflow-x-auto">
             @foreach($partner->addresses as $arrayIndex => $address)
                 <div class="card card-partner-address bg-dark shadow border border-dark">
+                    <div class="card-header">
+                        <h5 class="text-white h5 fw-light">📌 {{ $arrayIndex + 1 }}</h5>
+                    </div>
                     <div class="card-body">
                         <p class="card-text mb-2 text-white">{{ $address->logradouro }}, {{ $address->numero }}</p>
                         <p class="card-text mb-2 text-white">Bairro: {{ $address->bairro }}</p>
@@ -295,6 +298,8 @@
 
                 const response = await request.json();
 
+                if (response?.erro) return false;
+
                 return response;
             }
             catch (error)
@@ -339,18 +344,11 @@
     <script defer>
         function confirmDeleteAddress(address, context)
         {
-            console.log(address)
-
             const comfirmed = window.confirm('Continuar para a deleção do endereço em '.concat(address.logradouro, ' - ', address.cidade, '?'))
 
             if (comfirmed) {
                 context.type = 'submit';
-                console.dir(context.type)
             }
-        }
-
-        function teste() {
-            console.log('..')
         }
     </script>
 @endsection
