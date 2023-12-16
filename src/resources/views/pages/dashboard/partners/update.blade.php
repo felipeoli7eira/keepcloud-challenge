@@ -110,9 +110,6 @@
                 <div class="card card-partner-address bg-dark shadow border border-dark">
                     <div class="card-header d-flex align-items-center gap-2">
                         <span class="text-white">{{ $arrayIndex + 1 }}</span>
-                        @if($address->principal)
-                            <p class="text-white text-sm fw-light m-0">- Este é o endereço principal</p>
-                        @endif
                     </div>
                     <div class="card-body">
                         <p class="card-text mb-2 text-white">{{ $address->logradouro }}, {{ $address->numero }}</p>
@@ -133,6 +130,8 @@
                                 <input type="hidden" name="address_id" value="{{ $address->id }}">
                                 <button type="submit" class="btn btn-primary btn-sm">Marcar como principal</button>
                             </form>
+                        @else
+                            <p class="text-warning text-sm fw-light m-0">Este é o endereço principal</p>
                         @endif
 
                         <form action="{{ route('dashboard.address.destroy', $address->id) }}" method="post">
