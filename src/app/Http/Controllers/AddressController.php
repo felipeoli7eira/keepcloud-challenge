@@ -83,18 +83,20 @@ class AddressController extends Controller
                 'cidade' => $request->input('cidade'),
                 'estado' => $request->input('uf'),
 
-                'partner_id' => $request->input('modelid')
+                'partner_id' => $request->input('partner_id')
             ]);
 
-            $address->save();
+            $save = $address->save();
 
-            return back()->with('address_added', true);
+            if (! $save) {
+                return back()->with('address_created', false);
+            }
+
+            return back()->with('address_created', true);
         }
         catch (Throwable $throwable)
         {
-
-            dd($throwable->getMessage());
-            return back()->withInput()->with('address_added', false);
+            return back()->withInput()->with('address_created', false);
         }
     }
 
@@ -138,8 +140,18 @@ class AddressController extends Controller
      * @param  \App\Models\Address  $address
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Address $address)
+    public function destroy(Request $request)
     {
-        //
+        $address = Address::find($request->id);
+
+        if (! $address) {
+            return back()->withErrors('Endereço não encontrado');
+        }
+
+        if (! $address->delete()) {
+            return back()->withErrors('Erro ao deletar o endereço selecionado');
+        }
+
+        return back();
     }
 }

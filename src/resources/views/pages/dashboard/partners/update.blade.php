@@ -2,39 +2,51 @@
 
 @section('content')
     <div class="dashboard-page">
+        @if(session()->has('updated'))
+            @if(session('updated'))
+                <div class="alert alert-success shadow-sm" role="alert">
+                    <p class="m-0 fw-light">Dados atualizados com sucesso</p>
+                </div>
+            @else
+                <div class="alert alert-danger shadow-sm" role="alert">
+                    <p class="m-0 fw-light">Erro ao atualizar os dados</p>
+                </div>
+            @endif
+        @endif
+
+        @if(session()->has('address_created'))
+            @if(session('address_created'))
+                <div class="alert alert-success shadow-sm" role="alert">
+                    <p class="m-0 fw-light">Endereço cadastrado</p>
+                </div>
+            @else
+                <div class="alert alert-danger shadow-sm" role="alert">
+                    <p class="m-0 fw-light">Erro ao cadastrar o endereço</p>
+                </div>
+            @endif
+        @endif
+
+        @if($errors->any())
+            <div class="errors my-5">
+                @foreach($errors->all() as $key => $error)
+                    <p class="m-0 fw-normal text-danger mb-1 w-100">{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
+
         <div class="dashboard-page-title mb-5 d-flex align-items-center justify-content-between">
-            <h1 class="text-white h1 h1-responsive fw-light">Atualização de dados</h1>
+            <h3 class="text-white h3 h3-responsive fw-light">Informações básicas</h3>
             <nav>
-                <a href="{{ route('dashboard.partner.list') }}" class="btn btn-primary btn-md text-uppercase shadow-sm fw-medium">voltar</a>
+                <a
+                    href="{{ route('dashboard.partner.list') }}"
+                    class="btn btn-primary btn-md text-uppercase shadow-sm fw-medium">
+                    voltar
+                </a>
             </nav>
         </div>
 
         <div class="container">
-            @if(session()->has('updated'))
-                @if(session('updated'))
-                    <div class="alert alert-success shadow-sm" role="alert">
-                        <p class="m-0 fw-light">Dados atualizados com sucesso</p>
-                    </div>
-                @else
-                    <div class="alert alert-danger shadow-sm" role="alert">
-                        <p class="m-0 fw-light">Erro ao atualizar os dados</p>
-                    </div>
-                @endif
-            @endif
-
-            @if(session()->has('address_added'))
-                @if(session('address_added'))
-                    <div class="alert alert-success shadow-sm" role="alert">
-                        <p class="m-0 fw-light">Endereço cadastrado</p>
-                    </div>
-                @else
-                    <div class="alert alert-danger shadow-sm" role="alert">
-                        <p class="m-0 fw-light">Erro ao cadastrar o endereço</p>
-                    </div>
-                @endif
-            @endif
-
-            <form action="{{ route('dashboard.partner.update', $partner->id) }}" method="post" class="">
+            <form action="{{ route('dashboard.partner.update', $partner->id) }}" method="post">
                 @csrf
                 @method('PUT')
 
@@ -60,24 +72,16 @@
                 <div class="row mb-3">
                     <div class="col col-3">
                         <label for="" class="m-0 text-white h-100 d-flex flex-col align-items-center">
-                            <span class="text-danger me-2">*</span> Tipo
+                            <span class="text-danger me-2">*</span> Tipo (selecione)
                         </label>
                     </div>
                     <div class="col col-9">
                         <select name="type" id="type" class="form-control @error('type') is-invalid @enderror" name="type" required>
-                            <option @if($partner->type === 'silver') selected @endif value="silver">Silver</option>
-                            <option @if($partner->type === 'gold') selected @endif value="gold">Gold</option>
+                            <option @if($partner->type === 'silver') selected @endif value="silver">SILVER</option>
+                            <option @if($partner->type === 'gold') selected @endif value="gold">GOLD</option>
                         </select>
                     </div>
                 </div>
-
-                @if($errors->any())
-                    <div class="errors my-5">
-                        @foreach($errors->all() as $key => $error)
-                            <p class="ps-3 m-0 text-end fw-normal text-danger mb-2 w-100">{{ $error }}</p>
-                        @endforeach
-                    </div>
-                @endif
 
                 <footer class="text-end">
                     <button type="submit" class="btn btn-primary text-uppercase shadow-sm fw-medium">atualizar</button>
@@ -85,38 +89,43 @@
             </form>
         </div>
 
-        <div class="dashboard-page-title mb-5 d-flex align-items-center justify-content-between">
-            <h1 class="text-white h1 h1-responsive fw-light">Endereços</h1>
+        <div class="dashboard-page-title mb-5">
+            <h3 class="text-white h3 h3-responsive fw-light">Endereços</h3>
         </div>
 
-        <div class="container mb-5">
+        <div class="container mb-5 d-flex gap-2">
             @foreach($partner->addresses as $arrayIndex => $address)
-                <div class="card bg-dark shadow border border-dark" style="width: 18rem">
+                <div class="card card-partner-address bg-dark shadow border border-dark">
                     <div class="card-body">
-                        <p class="card-text mb-2 text-white">{{ $address->logradouro }}, {{ $address->numero }} - {{ $address->bairro }}</p>
-                        <p class="m-0 card-title text-white mb-2">{{ $address->cidade }} {{ $address->estado }}</p>
-                        <p class="m-0 card-title text-white">{{ $address->cep }}</p>
+                        <p class="card-text mb-2 text-white">{{ $address->logradouro }}, {{ $address->numero }}</p>
+                        <p class="card-text mb-2 text-white">Bairro: {{ $address->bairro }}</p>
+                        <p class="m-0 card-title text-white mb-2">{{ $address->cidade }} - {{ $address->estado }}</p>
+                        <p class="m-0 card-title text-white mb-2">{{ $address->cep }}</p>
                         @if($address->complemento)
-                            <p class="card-subtitle mb-2 text-white">({{ $address->complemento }})</p>
+                            <p class="card-subtitle mb-2 text-white mt-3">Complemento:</p>
+                            <p class="card-subtitle mb-2 text-white">{{ $address->complemento }}</p>
                         @endif
-
-                        <hr>
-
-                        <button type="button" class="btn btn-sm btn-danger shadow text-uppercase fw-bold">Excluir</button>
+                    </div>
+                    <div class="card-footer">
+                        <form action="{{ route('dashboard.address.destroy', $address->id) }}" method="post">
+                            @method('DELETE')
+                            @csrf
+                            <button type="button" class="btn btn-sm p-0" onclick="confirmDeleteAddress({{ json_encode($address) }}, this)">
+                                <img src="{{ asset('svg/trash.svg') }}" alt="Lixeira" width="15">
+                            </button>
+                        </form>
                     </div>
                 </div>
             @endforeach
         </div>
 
         <div class="dashboard-page-title mb-5 d-flex align-items-center justify-content-between">
-            <h1 class="text-white h1 h1-responsive fw-light">Cadastro de endereço</h1>
+            <h3 class="text-white h3 h3-responsive fw-light">Cadastro de endereço</h3>
         </div>
 
         <form class="container" method="post" action="{{ route('dashboard.address.store') }}" novalidate>
-
             @csrf
-
-            <input type="hidden" name="modelid" value="{{ request('id') }}">
+            <input type="hidden" name="partner_id" value="{{ request('id') }}">
 
             <div class="row mb-3">
                 <div class="col col-3">
@@ -242,22 +251,13 @@
                         type="text"
                         name="complemento"
                         class="form-control @error('complemento') is-invalid @enderror"
-                        maxlength="191"
+                        maxlength="50"
                         value="{{ old('complemento', '') }}"
                     />
                 </div>
             </div>
 
-                {{-- @if($errors->any())
-                    <div class="errors my-5">
-                        @foreach($errors->all() as $key => $error)
-                            <p class="ps-3 m-0 text-end fw-normal text-danger mb-2 w-100">{{ $error }}</p>
-                        @endforeach
-                    </div>
-                @endif --}}
-
             <footer class="text-end">
-                <button onclick="enableInputs()" type="button" class="btn btn-dark text-uppercase shadow-sm fw-medium">preencher manualmente</button>
                 <button type="submit" class="btn btn-primary text-uppercase shadow-sm fw-medium">cadastrar</button>
             </footer>
         </form>
@@ -265,75 +265,92 @@
 @endsection
 
 @section('css')
-<style>
-    span.span-cep-info {
-        display: none;
-    }
-</style>
+    <style>
+        span.span-cep-info {
+            display: none;
+        }
+
+        .card-partner-address {
+            min-width: 20rem;
+        }
+    </style>
 @endsection
 
 @section('script')
-<script defer>
+    <script defer>
 
-    const VIA_CEP_API_URL = 'https://viacep.com.br/ws/';
+        const VIA_CEP_API_URL = 'https://viacep.com.br/ws/';
 
-    const enableInputs = () => {
-        const disabledInputs = Array.from(document.querySelectorAll('[disabled]'));
-        disabledInputs.map(input => input.disabled = false);
-    };
+        const setCepQueryFeedback = (display) => {
+            const cepQueryFeedback = document.querySelector('span.span-cep-info');
+            cepQueryFeedback.style.display = display;
+        };
 
-    const setCepQueryFeedback = (display) => {
-        const cepQueryFeedback = document.querySelector('span.span-cep-info');
-        cepQueryFeedback.style.display = display;
-    };
+        const queryCep = async (cepNumber) => {
+            try
+            {
+                const request = await fetch(VIA_CEP_API_URL.concat(cepNumber, '/json'));
 
-    const queryCep = async (cepNumber) => {
-        try
-        {
-            const request = await fetch(VIA_CEP_API_URL.concat(cepNumber, '/json'));
+                if (!request.ok) return false;
 
-            if (!request.ok) return false;
+                const response = await request.json();
 
-            const response = await request.json();
-
-            return response;
-        }
-        catch (error)
-        {
-            console.log(error);
-            return false;
-        }
-    };
-
-    const getCEPData = async (context) => {
-        setCepQueryFeedback('none');
-
-        if (context.value.length === 8) {
-
-            setCepQueryFeedback('block');
-            const request = await queryCep(context.value.trim());
-            setCepQueryFeedback('none');
-
-            if (request === false) {
-                alert('Erro ao preencher os dados de endereço automaticamente. Por favor, preencha manualmente.');
+                return response;
+            }
+            catch (error)
+            {
+                console.log(error);
                 return false;
             }
+        };
 
-            autoFillAddressInputs(request);
-        }
-    };
+        const getCEPData = async (context) => {
+            setCepQueryFeedback('none');
 
-    const autoFillAddressInputs = (data) => {
-        document.querySelector('[name=cidade]').value = data.localidade;
-        document.querySelector('[name=logradouro]').value = data.logradouro;
-        document.querySelector('[name=bairro]').value = data.bairro;
+            if (context.value.length === 8) {
 
-        const ufsOptions = document.querySelector('[name=uf]').options;
-        Array.from(ufsOptions).map(option => {
-            if (option.value === data.uf) {
-                option.selected = true;
+                setCepQueryFeedback('block');
+                const request = await queryCep(context.value.trim());
+                setCepQueryFeedback('none');
+
+                if (request === false) {
+                    alert('Erro ao preencher os dados de endereço automaticamente. Por favor, preencha manualmente.');
+                    return false;
+                }
+
+                fillAddressInputs(request);
             }
-        });
-    };
-</script>
+        };
+
+        const fillAddressInputs = (data) => {
+            document.querySelector('[name=cidade]').value = data.localidade;
+            document.querySelector('[name=logradouro]').value = data.logradouro;
+            document.querySelector('[name=bairro]').value = data.bairro;
+
+            const ufsOptions = document.querySelector('[name=uf]').options;
+            Array.from(ufsOptions).map(option => {
+                if (option.value === data.uf) {
+                    option.selected = true;
+                }
+            });
+        };
+    </script>
+
+    <script defer>
+        function confirmDeleteAddress(address, context)
+        {
+            console.log(address)
+
+            const comfirmed = window.confirm('Continuar para a deleção do endereço em '.concat(address.logradouro, ' - ', address.cidade, '?'))
+
+            if (comfirmed) {
+                context.type = 'submit';
+                console.dir(context.type)
+            }
+        }
+
+        function teste() {
+            console.log('..')
+        }
+    </script>
 @endsection

@@ -34,11 +34,13 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth', 'as' => 'dashboar
     Route::get('partner/{id}/show', [App\Http\Controllers\PartnerController::class, 'show'])->name('partner.show');
     Route::post('partner', [App\Http\Controllers\PartnerController::class, 'store'])->name('partner.store');
     Route::put('partner/{id}/update', [App\Http\Controllers\PartnerController::class, 'update'])->name('partner.update');
-    // delete....
+    Route::delete('partner/{id}/destroy', [App\Http\Controllers\PartnerController::class, 'destroy'])->name('partner.destroy');
     // * End partners routes
 
     // * Rotas relacionadas a endereço
     Route::post('address', [App\Http\Controllers\AddressController::class, 'store'])->name('address.store');
+    Route::delete('address/{id}/destroy', [App\Http\Controllers\AddressController::class, 'destroy'])->name('address.destroy');
+
 
     Route::get('profile', [App\Http\Controllers\User::class, 'showAuthUserProfile'])->name('user.profile.show');
     Route::put('profile/{user}', [App\Http\Controllers\User::class, 'updateAuthUserProfile'])->name('user.profile.update');

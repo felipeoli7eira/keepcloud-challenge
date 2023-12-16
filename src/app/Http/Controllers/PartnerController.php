@@ -59,9 +59,9 @@ class PartnerController extends Controller
      */
     public function show(Request $request)
     {
-        $partner = Partner::where('id', $request->id)->first();
+        $partner = Partner::find($request->id);
 
-        if (!$partner->exists()) {
+        if (! $partner->exists()) {
             return route('dashboard.partner.list');
         }
 
@@ -112,8 +112,9 @@ class PartnerController extends Controller
      * @param  \App\Models\Partner  $partner
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Partner $partner)
+    public function destroy(Request $request)
     {
-        //
+        $partner = Partner::find($request->id);
+        dd($partner->name);
     }
 }
