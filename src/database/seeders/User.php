@@ -16,9 +16,9 @@ class User extends Seeder
     public function run()
     {
         ModelsUser::create([
-            'name'     => 'developer',
-            'email'    => 'dev@local.com.br',
-            'password' => Hash::make('localhost')
+            'name'     => 'Developer',
+            'email'    => 'dev@laravel.com',
+            'password' => Hash::make('laravel')
         ]);
     }
 }

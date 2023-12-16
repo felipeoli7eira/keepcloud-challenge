@@ -7,7 +7,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $page_title ?? 'Laravel App' }}</title>
 
-    <!-- Bootstrap 5.3.2 -->
     <link href="{{ asset('css/app/normalize.css') }}" rel="stylesheet">
     <link href="{{ asset('libs/bootstrap-5/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app/app.css') }}" rel="stylesheet">
