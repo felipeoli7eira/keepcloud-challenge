@@ -35,7 +35,7 @@ O script ```setup.sh``` faz isso tudo por conta própria, mas é necessário ter
 ## Setup pronto com Docker
 Como mencionado anteriormente, o que é necessário para fazer o setup com Docker, é rodar o comando ```sh setup.sh``` na raiz do projeto. Mas isso só deve ser feito quando for subir o projeto pela primeira vez para que a imagem e o container sejam criado. Das próximas vezes o comando ```sh start.sh``` pode ser executado para subir o container.
 
->>> Para parar o funcionamento do container com a aplicação, o comando ```sh stop.sh``` pode ser chamado.
+> Para parar o funcionamento do container com a aplicação, o comando ```sh stop.sh``` pode ser chamado.
 
 Após rodar o comando ```sh setup.sh```, os seguintes serviços estarão disponíveis:
 
